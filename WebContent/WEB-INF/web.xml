@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath*:/spring/applicationContext-*.xml</param-value>
+    </context-param>
+
+    <listener>
+        <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+
+     <!--  过滤器就是请求到达web资源之前 获取请求信息并进行处理，之后继续向后执行 -->
+  <!-- 字符编码过滤器 -->
+   <filter>
+  <filter-name>encodingFilter</filter-name>
+  <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+  <init-param>
+     <param-name>encoding</param-name>
+     <param-value>utf-8</param-value>
+  </init-param>
+  <init-param>
+     <param-name>forceEncoding</param-name>
+     <param-value>true</param-value>
+  </init-param>
+    </filter>
+    <filter-mapping>
+   <filter-name>encodingFilter</filter-name>
+   <url-pattern>*.do</url-pattern>
+    </filter-mapping>
+
+    <servlet>
+        <servlet-name>rest</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <init-param>  
+	      <param-name>contextConfigLocation</param-name>  
+          <param-value>/WEB-INF/rest-servlet.xml</param-value>  
+	</init-param>
+	<!-- 这个配置文件在容器启动的时候 就加载 -->
+    <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>rest</servlet-name>
+        <url-pattern>*.jhtml</url-pattern>
+    </servlet-mapping>
+</web-app>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+
+    <diskStore path="java.io.tmpdir/ehcache"/>
+
+
+    <defaultCache
+        maxElementsInMemory="1000"
+        eternal="true"
+        timeToLiveSeconds="3"
+        overflowToDisk="true"
+        diskPersistent="false"
+        />
+
+    <cache name="shiroActiveSessionCache"
+       maxElementsInMemory="2000"
+       overflowToDisk="true"
+       eternal="true"
+       timeToLiveSeconds="0"
+       timeToIdleSeconds="0"
+       diskPersistent="false"/>
+
+    <cache name="authenticationRetryCache"
+       maxElementsInMemory="2000"
+       overflowToDisk="true"
+       eternal="false"
+       timeToIdleSeconds="420"
+       timeToLiveSeconds="0"
+       diskPersistent="false">
+    </cache>
+
+    <cache name="concurrentSessionCache"
+       maxElementsInMemory="2000"
+       overflowToDisk="true"
+       eternal="false"
+       timeToIdleSeconds="420"
+       timeToLiveSeconds="0">
+    </cache>
+
+</ehcache>
