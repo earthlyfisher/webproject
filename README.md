@@ -3,9 +3,9 @@
 **`spring`,`sprigmvc`,`mybatis`**
 ##upload
 **`webuploader`**
-##缓存
+##缂撳瓨
 REDIS
-##消息队列
+##娑堟伅闃熷垪
 Rabbit MQ
 
 
