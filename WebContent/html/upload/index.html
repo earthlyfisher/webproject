@@ -12,7 +12,7 @@
 		<!--用来存放文件信息-->
 		<div id="thelist" class="uploader-list"></div>
 		<div class="progress" style="border: 1px solid #1483d8;width: 198px;">
-		<div class="progress-bar" role="progressbar" style="width: 0%">
+		<div class="progress-bar" role="progressbar" style="border: 1px solid #1483d8;width: 0%">
 		</div>
 		</div>
 		<div class="btns">
@@ -33,7 +33,7 @@
 			chunked : true,
 			chunkSize : 5 * 1024 * 1024,
 			chunkRetry : 2,
-			server : '../user/upload.jhtml',
+			server : '../../user/upload.jhtml',
 			// runtimeOrder: 'flash',
 
 			accept : {
@@ -59,10 +59,7 @@
 		});
 
 		// 文件上传过程中创建进度条实时显示。
-		uploader
-				.on(
-						'uploadProgress',
-						function(file, percentage) {
+		uploader.on('uploadProgress',function(file, percentage) {
 							var $li = $('#' + file.id), $percent = $li
 									.find('.progress .progress-bar');
 							$li.find('p.state').text('上传中');
