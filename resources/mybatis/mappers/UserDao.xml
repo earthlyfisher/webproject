@@ -2,21 +2,32 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.wyp.module.dao.UserDao">
 
-    <sql id="customerInfo">
-            t.ID AS "id",
-            t.NAME AS "name",
-            t.PASSWORD AS "passWord",
-    </sql>
+	<sql id="customerInfo">
+		t.ID AS "id",
+		t.NAME AS "name",
+		t.PASSWORD AS "passWord",
+		t.TYPE AS "type",
+		t.SALT AS "salt"
+	</sql>
 
-    <select id="findAllList" resultType="com.wyp.module.pojo.Customer">
-        SELECT
-        <include refid="customerInfo"/>
-        FROM customer t
-    </select>
+	<insert id="insert" parameterType="com.wyp.module.pojo.Customer"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO Customer(NAME,PASSWORD)
+		VALUES(#{name},#{password})
+	</insert>
 
-    <insert id="insert" parameterType="com.wyp.module.pojo.Customer" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO Customer(NAME,PASSWORD)
-         VALUES(#{name},#{password})
-    </insert>
-    
+
+	<select id="findAllList" resultType="com.wyp.module.pojo.Customer">
+		SELECT
+		<include refid="customerInfo" />
+		FROM customer t
+	</select>
+	
+	<select id="get" resultType="com.wyp.module.pojo.Customer">
+		SELECT
+		<include refid="customerInfo" />
+		FROM customer t
+		WHERE T.NAME=#{name}
+	</select>
+	
 </mapper>

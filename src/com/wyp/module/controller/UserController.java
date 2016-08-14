@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.wyp.module.common.ResponseEntity;
 import com.wyp.module.pojo.Customer;
 import com.wyp.module.service.UserService;
 
@@ -35,18 +36,29 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping(value = "/login.jhtml", method = RequestMethod.GET)
-	public String userLogin(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		String name = "earthlyfish";
-		String password = "1234";
-		Customer customer = new Customer();
-		customer.setName(name);
-		customer.setPassword(password);
-		userService.addUser(customer);
-		return "main";
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String userLogin() {
+		return "../index.jsp";
 	}
 
-	@RequestMapping(value = "/upload.jhtml")
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String userLogin(Customer customer, HttpSession session) {
+		ResponseEntity resEntity = new ResponseEntity();
+		String destPage = "redirect:/manager/main";
+		customer = userService.findCustomer4Login(customer);
+		if (null != customer) {
+			session.setAttribute("currentUser", customer);
+			resEntity.setResCode("true");
+		} else {
+			resEntity.setResCode("false");
+			resEntity.setErrMsg("login failed:name or password error,please try again!");
+			destPage = "redirect:../login.jsp";
+		}
+		session.setAttribute("loginResponse", resEntity);
+		return destPage;
+	}
+
+	@RequestMapping(value = "/upload")
 	@ResponseBody
 	public String uploads(@RequestParam(value = "file", required = false) MultipartFile file,
 			HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -59,16 +71,16 @@ public class UserController {
 			if (!targetFile.exists()) {
 				targetFile.mkdirs();
 			}
-			file.transferTo(targetFile); // Ð¡ÎÄ¼þ£¬Ö±½Ó¿½±´
+			file.transferTo(targetFile); // Ð¡ï¿½Ä¼ï¿½ï¿½ï¿½Ö±ï¿½Ó¿ï¿½ï¿½ï¿½
 			return "";
 		} else {
-			int chunk = Integer.parseInt(request.getParameter("chunk")); // µ±Ç°·ÖÆ¬
-			int chunks = Integer.parseInt(request.getParameter("chunks")); // ·ÖÆ¬×Ü¼Æ
-			if(chunk==0){
-				logger.info("start: "+new Date());  
+			int chunk = Integer.parseInt(request.getParameter("chunk")); // ï¿½ï¿½Ç°ï¿½ï¿½Æ¬
+			int chunks = Integer.parseInt(request.getParameter("chunks")); // ï¿½ï¿½Æ¬ï¿½Ü¼ï¿½
+			if (chunk == 0) {
+				logger.info("start: " + new Date());
 			}
-			if(chunk==chunks-1){
-				logger.info("end: "+new Date());
+			if (chunk == chunks - 1) {
+				logger.info("end: " + new Date());
 			}
 			String realPath = request.getSession().getServletContext().getRealPath("/uploaddir/");
 
@@ -85,7 +97,7 @@ public class UserController {
 			}
 			inputStream.close();
 			outputStream.close();
-			return "ÉÏ´«³É¹¦";
+			return "ï¿½Ï´ï¿½ï¿½É¹ï¿½";
 		}
 
 	}

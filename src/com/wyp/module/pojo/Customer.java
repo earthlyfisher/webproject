@@ -2,61 +2,76 @@ package com.wyp.module.pojo;
 
 public class Customer {
 
-    private int id;
-    private String name;
-    private String password;
+	private int id;
 
-    public int getId() {
-        return id;
-    }
+	private String name;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+	private String password;
 
-    public String getName() {
-        return name;
-    }
+	private String type;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	private String salt;
 
-    public String getPassword() {
-        return password;
-    }
+	public int getId() {
+		return id;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setId(int id) {
+		this.id = id;
+	}
 
-    @Override
-    public String toString() {
-        return "Users [id=" + id + ", name=" + name + ", password=" + password
-                + "]";
-    }
+	public String getName() {
+		return name;
+	}
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + id;
-        return result;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        Customer other = (Customer) obj;
-        if (id != other.id)
-            return false;
-        return true;
-    }
+	public String getPassword() {
+		return password;
+	}
 
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public String getSalt() {
+		return salt;
+	}
+
+	public void setSalt(String salt) {
+		this.salt = salt;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Customer other = (Customer) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
 
 }
