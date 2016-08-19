@@ -141,7 +141,7 @@ public static void main(String[] args) {
 ![](WebContent/md/3 ways to find duplicate elements in an array Java.png)
 
 ##Difference between Direct and Mapped ByteBuffer in Java
-![](WebContent/md/Difference between Direct and Mapped ByteBuffer in Java.png)
+![](WebContent/md/Difference between Direct and Mapped ByteBuffer in Java.jpg)
 
 ##Map
 `HashMap`通过hashtable实现key-value的存储，按照key的hashCode存储，可以有null key
