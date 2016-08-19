@@ -45,8 +45,8 @@ public class SingleInstance {
 }
 ```
 ##枚举
-```java
 
+```java
 /**
  * 1.线程安全，通过类加载器保证线程安全。
  * 2.抗序列化问题：枚举类自己实现了readResolve（）方法，所以抗序列化，这个方法是当前类自己实现的（解决）
@@ -79,8 +79,9 @@ public void testMulti() {
 	}
 ```
 ##direct-buffer,non-direct-buffer
+
 ```java
-/**
+     /**
 	 * Direct vs Non-direct vs MappedByteBuffer in Java: Direct buffers are
 	 * allocated outside heap and they are not in control of Garbage Collection
 	 * while non-direct buffers are simply a wrapper around byte arrays, located
