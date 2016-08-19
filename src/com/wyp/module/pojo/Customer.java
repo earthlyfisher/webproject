@@ -1,12 +1,19 @@
 package com.wyp.module.pojo;
 
-public class Customer {
+import java.io.Serializable;
+
+public class Customer implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8220100956296048447L;
 
 	private int id;
 
 	private String name;
 
-	private String password;
+	private transient String password;
 
 	private String type;
 
@@ -55,9 +62,9 @@ public class Customer {
 	@Override
 	public int hashCode() {
 		final int prime = 31;
-		int result = 1;
-		result = prime * result + id;
-		return result;
+		int hash = 1;
+		hash = prime * hash + id;
+		return hash;
 	}
 
 	@Override

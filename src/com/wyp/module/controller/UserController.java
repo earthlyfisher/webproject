@@ -58,6 +58,23 @@ public class UserController {
 		return destPage;
 	}
 
+	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	public String userRegister(Customer customer, HttpSession session) {
+		ResponseEntity resEntity = new ResponseEntity();
+		String destPage = "redirect:/manager/main";
+		customer = userService.findCustomer4Login(customer);
+		if (null != customer) {
+			session.setAttribute("currentUser", customer);
+			resEntity.setResCode("true");
+		} else {
+			resEntity.setResCode("false");
+			resEntity.setErrMsg("login failed:name or password error,please try again!");
+			destPage = "redirect:../login.jsp";
+		}
+		session.setAttribute("loginResponse", resEntity);
+		return destPage;
+	}
+
 	@RequestMapping(value = "/upload")
 	@ResponseBody
 	public String uploads(@RequestParam(value = "file", required = false) MultipartFile file,
