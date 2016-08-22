@@ -5,7 +5,10 @@ import java.io.Serializable;
 public class Customer implements Serializable {
 
 	/**
+	 * 静态long类型常量serialVersionUID的作用：
 	 * 
+	 * 显示的设置serialVersionUID值就可以保证版本的兼容性，如果你在类中写上了这个值，就算类变动了，
+	 * 它反序列化的时候也能和文件中的原值匹配上。而新增的值则会设置成零值，删除的值则不会显示。
 	 */
 	private static final long serialVersionUID = -8220100956296048447L;
 
@@ -18,6 +21,8 @@ public class Customer implements Serializable {
 	private String type;
 
 	private String salt;
+
+	private int age;
 
 	public int getId() {
 		return id;
@@ -59,6 +64,14 @@ public class Customer implements Serializable {
 		this.salt = salt;
 	}
 
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -79,6 +92,11 @@ public class Customer implements Serializable {
 		if (id != other.id)
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Customer [id=" + id + ", name=" + name + ", type=" + type + ", salt=" + salt + ", age=" + age + "]";
 	}
 
 }

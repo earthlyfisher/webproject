@@ -6,25 +6,25 @@ import java.lang.ref.WeakReference;
 import java.util.LinkedList;
 
 /**
- * ÊµÀýÒÔÈõÒýÓÃÎªÀý£¬ËµÃ÷ÁË¸÷ÖÖÒýÓÃµÄ´¦Àí·½Ê½£º
- * 1.Ç¿ÒýÓÃ£ºnew·½Ê½
- * 2.softÈíÒýÓÃ£ºÔÚJVMÄÚ´æ¿Õ¼ä²»×ãÊ±£¬»ØÊÕ(ÈíÒýÓÃ»ØÊÕ£¬±ØÐëÌõ¼þ£¬¶ÔÏóÇ¿ÒýÓÃ²»¿É´ï)
- * 3.weakÈõÒýÓÃ£ºÔÚÀ¬»ø»ØÊÕÊ±£¬´¥·¢¶ÔÏó»ØÊÕ(ÈõÒýÓÃ»ØÊÕ£¬±ØÐëÌõ¼þ£¬¶ÔÏóÇ¿ÒýÓÃ²»¿É´ï)
- * 4.PhantomÐéÒýÓÃ£º  ÐéÒýÓÃÔÚ¼ÓÈë¶ÓÁÐÊ±²¢Ã»ÓÐÍ¨¹ýÀ¬»ø»ØÊÕÆ÷×Ô¶¯Çå³ý¡£Í¨¹ýÐéÒýÓÃ¿Éµ½´ïµÄ¶ÔÏó½«ÈÔÈ»±£³ÖÔ­×´£¬Ö±µ½ËùÓÐÕâÀàÒýÓÃ¶¼±»Çå³ý£¬»òÕßËüÃÇ¶¼±äµÃ²»¿Éµ½´ï¡£ 
+ * å®žä¾‹ä»¥å¼±å¼•ç”¨ä¸ºä¾‹ï¼Œè¯´æ˜Žäº†å„ç§å¼•ç”¨çš„å¤„ç†æ–¹å¼ï¼š
+ * 1.å¼ºå¼•ç”¨ï¼šnewæ–¹å¼
+ * 2.softè½¯å¼•ç”¨ï¼šåœ¨JVMå†…å­˜ç©ºé—´ä¸è¶³æ—¶ï¼Œå›žæ”¶(è½¯å¼•ç”¨å›žæ”¶ï¼Œå¿…é¡»æ¡ä»¶ï¼Œå¯¹è±¡å¼ºå¼•ç”¨ä¸å¯è¾¾)
+ * 3.weakå¼±å¼•ç”¨ï¼šåœ¨åžƒåœ¾å›žæ”¶æ—¶ï¼Œè§¦å‘å¯¹è±¡å›žæ”¶(å¼±å¼•ç”¨å›žæ”¶ï¼Œå¿…é¡»æ¡ä»¶ï¼Œå¯¹è±¡å¼ºå¼•ç”¨ä¸å¯è¾¾)
+ * 4.Phantomè™šå¼•ç”¨ï¼š  è™šå¼•ç”¨åœ¨åŠ å…¥é˜Ÿåˆ—æ—¶å¹¶æ²¡æœ‰é€šè¿‡åžƒåœ¾å›žæ”¶å™¨è‡ªåŠ¨æ¸…é™¤ã€‚é€šè¿‡è™šå¼•ç”¨å¯åˆ°è¾¾çš„å¯¹è±¡å°†ä»ç„¶ä¿æŒåŽŸçŠ¶ï¼Œç›´åˆ°æ‰€æœ‰è¿™ç±»å¼•ç”¨éƒ½è¢«æ¸…é™¤ï¼Œæˆ–è€…å®ƒä»¬éƒ½å˜å¾—ä¸å¯åˆ°è¾¾ã€‚ 
  * @author earthlyfish
  *
  */
 public class ReferenceTest {
 	/*
-	 * ReferenceQueueµÄ×÷ÓÃ:
-	 * <p>½«ÒÑ±»À¬»ø»ØÊÕµÄ¶ÔÏó¼ÇÂ¼ÔÚ¶ÓÁÐÖÐ£¬ÎÒÃÇ¿ÉÒÔ¸ù¾ÝÕâ¸ö¶ÓÁÐÖÐµÄÒýÓÃ¶ÔÏó£¬
-	 * ÖªµÀÄÄÐ©ÒÑ¾­±»»ØÊÕ£¬ºÃ½øÐÐÏÂÒ»²½µÄÇåÀí¹¤×÷:
-	 * ±ÈÈç:WeakHashMap¾ÍÊÇÀûÓÃ ReferenceQueueÀ´Çå³ýkeyÒÑ¾­Ã»ÓÐÇ¿ÒýÓÃµÄ Entries.</p>
+	 * ReferenceQueueçš„ä½œç”¨:
+	 * <p>å°†å·²è¢«åžƒåœ¾å›žæ”¶çš„å¯¹è±¡è®°å½•åœ¨é˜Ÿåˆ—ä¸­ï¼Œæˆ‘ä»¬å¯ä»¥æ ¹æ®è¿™ä¸ªé˜Ÿåˆ—ä¸­çš„å¼•ç”¨å¯¹è±¡ï¼Œ
+	 * çŸ¥é“å“ªäº›å·²ç»è¢«å›žæ”¶ï¼Œå¥½è¿›è¡Œä¸‹ä¸€æ­¥çš„æ¸…ç†å·¥ä½œ:
+	 * æ¯”å¦‚:WeakHashMapå°±æ˜¯åˆ©ç”¨ ReferenceQueueæ¥æ¸…é™¤keyå·²ç»æ²¡æœ‰å¼ºå¼•ç”¨çš„ Entries.</p>
 	 * <br/>
-	 * <p>1.poll():ÂÖÑ¯´Ë¶ÓÁÐ£¬²é¿´ÊÇ·ñ´æÔÚ¿ÉÓÃµÄÒýÓÃ¶ÔÏó¡£
-	 * Èç¹û´æÔÚÒ»¸öÁ¢¼´¿ÉÓÃµÄ¶ÔÏó£¬Ôò´Ó¸Ã¶ÓÁÐÖÐÒÆ³ý´Ë¶ÔÏó²¢·µ»Ø¡£·ñÔò´Ë·½·¨Á¢¼´·µ»Ø null.</p>
+	 * <p>1.poll():è½®è¯¢æ­¤é˜Ÿåˆ—ï¼ŒæŸ¥çœ‹æ˜¯å¦å­˜åœ¨å¯ç”¨çš„å¼•ç”¨å¯¹è±¡ã€‚
+	 * å¦‚æžœå­˜åœ¨ä¸€ä¸ªç«‹å³å¯ç”¨çš„å¯¹è±¡ï¼Œåˆ™ä»Žè¯¥é˜Ÿåˆ—ä¸­ç§»é™¤æ­¤å¯¹è±¡å¹¶è¿”å›žã€‚å¦åˆ™æ­¤æ–¹æ³•ç«‹å³è¿”å›ž null.</p>
 	 * <br/>
-	 * <p>2.remove():ÒÆ³ý´Ë¶ÓÁÐÖÐµÄÏÂÒ»¸öÒýÓÃ¶ÔÏó£¬×èÈûµ½ÓÐÒ»¸ö¶ÔÏó±äµÃ¿ÉÓÃ»òÕß¸ø¶¨µÄ³¬Ê±ÆÚ(µ±È»¿ÉÒÔ×Ô¶¨Òå³¬Ê±Ê±¼ä)ÂúÁËÎªÖ¹¡£</p>
+	 * <p>2.remove():ç§»é™¤æ­¤é˜Ÿåˆ—ä¸­çš„ä¸‹ä¸€ä¸ªå¼•ç”¨å¯¹è±¡ï¼Œé˜»å¡žåˆ°æœ‰ä¸€ä¸ªå¯¹è±¡å˜å¾—å¯ç”¨æˆ–è€…ç»™å®šçš„è¶…æ—¶æœŸ(å½“ç„¶å¯ä»¥è‡ªå®šä¹‰è¶…æ—¶æ—¶é—´)æ»¡äº†ä¸ºæ­¢ã€‚</p>
 	 * <br/>
 	 */
 	private static ReferenceQueue<VeryBig> rq = new ReferenceQueue<VeryBig>();
@@ -49,7 +49,7 @@ public class ReferenceTest {
 		}
 		vb=null;
 		System.gc();
-		try { // ÏÂÃæÐÝÏ¢¼¸·ÖÖÓ£¬ÈÃÉÏÃæµÄÀ¬»ø»ØÊÕÏß³ÌÔËÐÐÍê³É
+		try { // ä¸‹é¢ä¼‘æ¯å‡ åˆ†é’Ÿï¼Œè®©ä¸Šé¢çš„åžƒåœ¾å›žæ”¶çº¿ç¨‹è¿è¡Œå®Œæˆ
 			Thread.currentThread().sleep(6000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
@@ -62,7 +62,7 @@ public class ReferenceTest {
 
 class VeryBig {
 	public String id;
-	// Õ¼ÓÃ¿Õ¼ä,ÈÃÏß³Ì½øÐÐ»ØÊÕ
+	// å ç”¨ç©ºé—´,è®©çº¿ç¨‹è¿›è¡Œå›žæ”¶
 	byte[] b = new byte[2 * 1024];
 
 	public VeryBig(String id) {
