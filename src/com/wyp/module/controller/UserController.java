@@ -58,7 +58,7 @@ public class UserController {
 		return destPage;
 	}
 
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String userRegister(Customer customer, HttpSession session) {
 		ResponseEntity resEntity = new ResponseEntity();
 		String destPage = "redirect:/manager/main";

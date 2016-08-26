@@ -1,0 +1,84 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<project name="webproject" default="deploy" basedir=".">
+	<property environment="environment" />
+	<property file="build.properties"/>
+	<property name="catalina.home" value="${environment.CATALINA_HOME}" />
+	<property name="project.name" value="webproject" />
+	<property name="src.dir" value="${basedir}/src" />
+	<property name="resource.dir" value="${basedir}/resources" />
+	<property name="web.dir" value="${basedir}/WebContent" />
+	<property name="build.dir" value="${basedir}/build" />
+	<property name="classes.dir" value="${build.dir}/WEB-INF/classes" />
+	<property name="Package-war" value="${project.name}.war" />
+
+	<!-- 当前时间及格式 -->
+	<tstamp>
+		<format property="current_time" pattern="yyyy-MM-dd hh:mm:ss" locale="zh" />
+	</tstamp>
+
+	<path id="compile.classpath">
+		<fileset dir="${web.dir}/WEB-INF/lib">
+			<include name="*.jar" />
+		</fileset>
+		<fileset dir="${catalina.home}/lib">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<!-- 创建目录结构 -->
+	<target name="init" description="create init dir">
+		<echo message="${current_time}"/>
+		<delete dir="${build.dir}" />
+		<delete file="${Package-war}" />
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/WEB-INF" />
+		<mkdir dir="${classes.dir}" />
+		<mkdir dir="${build.dir}/WEB-INF/lib" />
+
+		<!--copy static files from web.dir-->
+		<copy todir="${build.dir}">
+			<fileset dir="${web.dir}" excludes="/WEB-INF/classes/**/*.class,/WEB-INF/classes/*.xml" />
+		</copy>
+	</target>
+
+	<!-- javac编译任务 -->
+	<target name="compile" depends="init" description="compile java file use javac">
+		<echo message="${current_time}"/>
+		<javac srcdir="src" 
+			destdir="${classes.dir}"
+			includeantruntime="false" 
+			nowarn="on" 
+			source="1.7" 
+			target="1.7" 
+			deprecation="true" 
+			debug="true" 
+			encoding="UTF-8" 
+			classpathref="compile.classpath">
+		</javac>
+	</target>
+
+	<!--汇总所有文件-->
+	<target name="output" depends="compile" description="output necessary files to output dir">
+		<echo message="${current_time}"/>
+		<copy todir="${classes.dir}">
+			<fileset dir="${resource.dir}" excludes="database/,**/*.properties"/>
+		</copy>
+		<native2ascii src="${resource.dir}" dest="${classes.dir}" includes="**/*.properties"/>
+	</target>
+
+	<!--打war包-->
+	<target name="war" depends="output" description="output files to a war file">
+		<echo message="${current_time}"/>
+		<war destfile="${basedir}/${Package-war}">
+			<fileset dir="${build.dir}" includes="**" />
+		</war>
+	</target>
+
+	<!--deploy app-->
+	<target name="deploy" depends="war" description="deploy app under server">
+		<echo message="${current_time}"/>
+		<move file="${basedir}/${Package-war}" todir="${catalina.home}/webapps" />
+		<echo message="${current_time}"/>
+	</target>
+
+</project>
