@@ -1,9 +1,9 @@
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Dashboard - LOGIN</title>
+<title>Dashboard - Login</title>
 
 <meta name="viewport"
 	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -18,6 +18,23 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
+<script type="text/javascript">
+<!--闭包可以用在许多地方。它的最大用处有两个，一个是可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中。-->
+	var name = "The Window";
+	var object = {
+		name : "My Object",
+		getNameFunc : function() {
+			var that=this;//此this是第一层object.getNameFunc()时的this，即为object
+			return function() {
+				alert(that.name);
+				alert(this.name);//此this是第二层object.getNameFunc()()时的this，
+				                 //由于object.getNameFunc()返回的一个匿名函数,是一个全局变量，所以，此时的this是全局变量
+				return this.name;
+			};
+		}
+	};
+	object.getNameFunc()();
+</script>
 
 <body>
 
@@ -89,11 +106,6 @@
 				</c:if>
 			</fieldset>
 
-			<div id="remember-me" class="pull-left">
-				<input type="checkbox" name="remember" id="remember" /> <label
-					id="remember-label" for="remember">Remember Me</label>
-			</div>
-
 			<div class="pull-right">
 				<button type="submit" class="btn btn-warning btn-large">
 					Login</button>
@@ -107,18 +119,14 @@
 		<div id="login-extra">
 
 			<p>
-				Don't have an account? <a href="javascript:;">Sign Up.</a>
-			</p>
-
-			<p>
-				Remind Password? <a href="forgot_password.html">Retrieve.</a>
+				Don't have an account? <a href="./user/register">Sign Up.</a>
 			</p>
 
 		</div>
 		<!-- /login-extra -->
 
 	</div>
-	
+
 	<!-- /login-wrapper -->
 	<script src="./res/js/jquery-1.7.2.min.js"></script>
 

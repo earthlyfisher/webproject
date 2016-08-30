@@ -12,8 +12,8 @@
 
 	<insert id="insert" parameterType="com.wyp.module.pojo.Customer"
 		useGeneratedKeys="true" keyProperty="id">
-		INSERT INTO Customer(NAME,PASSWORD)
-		VALUES(#{name},#{password})
+		INSERT INTO Customer(NAME,PASSWORD,TYPE,SALT)
+		VALUES(#{name},#{password},#{type},#{salt})
 	</insert>
 
 

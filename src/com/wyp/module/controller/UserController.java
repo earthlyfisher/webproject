@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.wyp.module.common.ResponseEntity;
+import com.wyp.module.common.UserType;
 import com.wyp.module.pojo.Customer;
 import com.wyp.module.service.UserService;
 
@@ -58,19 +59,38 @@ public class UserController {
 		return destPage;
 	}
 
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	public String userRegister() {
+		return "user/register";
+	}
+
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String userRegister(Customer customer, HttpSession session) {
 		ResponseEntity resEntity = new ResponseEntity();
-		String destPage = "redirect:/manager/main";
-		customer = userService.findCustomer4Login(customer);
-		if (null != customer) {
-			session.setAttribute("currentUser", customer);
-			resEntity.setResCode("true");
-		} else {
-			resEntity.setResCode("false");
-			resEntity.setErrMsg("login failed:name or password error,please try again!");
-			destPage = "redirect:../login.jsp";
+		String destPage = "redirect:../login.jsp";
+		UserType userType = userService.registerUser(customer);
+		String resCode = "";
+		Object value = null;
+		String errorMsg = "";
+		switch (userType) {
+		case ACCOUNT_ERROR:
+			destPage = "user/register";
+			resCode = "false";
+			errorMsg = "注册信息有误";
+			break;
+		case HAS_ACCOUNT:
+			destPage = "user/register";
+			resCode = "false";
+			errorMsg = "用户名已被使用";
+			break;
+		default:
+			resCode = "true";
+			errorMsg = "注册成功";
+			break;
 		}
+		resEntity.setResCode(resCode);
+		resEntity.setValue(value);
+		resEntity.setErrMsg(errorMsg);
 		session.setAttribute("loginResponse", resEntity);
 		return destPage;
 	}
@@ -88,11 +108,11 @@ public class UserController {
 			if (!targetFile.exists()) {
 				targetFile.mkdirs();
 			}
-			file.transferTo(targetFile); // С�ļ���ֱ�ӿ���
+			file.transferTo(targetFile); // 不分片直接上传
 			return "";
 		} else {
-			int chunk = Integer.parseInt(request.getParameter("chunk")); // ��ǰ��Ƭ
-			int chunks = Integer.parseInt(request.getParameter("chunks")); // ��Ƭ�ܼ�
+			int chunk = Integer.parseInt(request.getParameter("chunk")); // 第几片
+			int chunks = Integer.parseInt(request.getParameter("chunks")); // 总片数
 			if (chunk == 0) {
 				logger.info("start: " + new Date());
 			}
@@ -114,7 +134,7 @@ public class UserController {
 			}
 			inputStream.close();
 			outputStream.close();
-			return "�ϴ��ɹ�";
+			return "success";
 		}
 
 	}

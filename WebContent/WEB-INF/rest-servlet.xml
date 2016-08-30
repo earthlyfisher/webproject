@@ -61,6 +61,7 @@
 			<mvc:mapping path="/**" />
 			<!-- 需排除拦截的地址 -->
 			<mvc:exclude-mapping path="/user/login**" />
+			<mvc:exclude-mapping path="/user/register**" />
 			<mvc:exclude-mapping path="/html/**" />
 			<mvc:exclude-mapping path="/res/**" />
 			<bean id="commonInterceptor" class="com.wyp.module.manager.SessionInterceptor"></bean> 

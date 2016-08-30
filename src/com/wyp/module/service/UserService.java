@@ -1,5 +1,6 @@
 package com.wyp.module.service;
 
+import com.wyp.module.common.UserType;
 import com.wyp.module.pojo.Customer;
 
 import java.util.List;
@@ -17,6 +18,12 @@ public interface UserService {
 	 * @param customer
 	 */
 	void addUser(Customer customer);
+	
+	/**
+	 * user register
+	 * @param customer
+	 */
+	UserType registerUser(Customer customer);
 
 	/**
 	 * 登录认证.
