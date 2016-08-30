@@ -18,23 +18,6 @@
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 </head>
-<script type="text/javascript">
-<!--闭包可以用在许多地方。它的最大用处有两个，一个是可以读取函数内部的变量，另一个就是让这些变量的值始终保持在内存中。-->
-	var name = "The Window";
-	var object = {
-		name : "My Object",
-		getNameFunc : function() {
-			var that=this;//此this是第一层object.getNameFunc()时的this，即为object
-			return function() {
-				alert(that.name);
-				alert(this.name);//此this是第二层object.getNameFunc()()时的this，
-				                 //由于object.getNameFunc()返回的一个匿名函数,是一个全局变量，所以，此时的this是全局变量
-				return this.name;
-			};
-		}
-	};
-	object.getNameFunc()();
-</script>
 
 <body>
 
