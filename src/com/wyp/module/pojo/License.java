@@ -1,7 +1,14 @@
 package com.wyp.module.pojo;
 
-public class License {
+import java.io.Serializable;
+
+public class License implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6866922977174223717L;
+
 	private String requestUUID;
 	
 	private String name;

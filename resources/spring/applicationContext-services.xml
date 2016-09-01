@@ -23,7 +23,7 @@
     <context:annotation-config/>  
     
     <!--    使用自动注入的时候要  添加他来扫描bean之后才能在使用的时候   -->
-    <context:component-scan base-package="com.wyp.module.service,com.wyp.module.dao"/>  
+    <context:component-scan base-package="com.wyp.module.service,com.wyp.module.dao,com.wyp.module.cache"/>  
 
     <aop:config>
         <aop:pointcut expression="bean(*Core)" id="module-pointcut" />
