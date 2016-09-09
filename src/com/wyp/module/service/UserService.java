@@ -17,7 +17,7 @@ public interface UserService {
 	 *
 	 * @param customer
 	 */
-	void addUser(Customer customer);
+	int addUser(Customer customer);
 	
 	/**
 	 * user register

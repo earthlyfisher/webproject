@@ -1,7 +1,6 @@
 package com.wyp.module.dao;
 
 import com.wyp.module.pojo.Customer;
-import org.springframework.stereotype.Repository;
 
 /**
  * UserDao.
@@ -9,7 +8,6 @@ import org.springframework.stereotype.Repository;
  * @since v1.0
  * @see UserDao
  */
-@Repository("userDao")
 public interface UserDao extends CrudDao<Customer>{
 
 

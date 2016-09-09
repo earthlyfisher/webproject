@@ -32,18 +32,26 @@
 			<bean
 				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
 		</property>
-		<!-- <property name="hashKeySerializer">
+		<property name="hashKeySerializer">
 			<bean
 				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
-		</property> -->
+		</property>
 		<property name="valueSerializer">
 			<bean
 				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
 		</property>
-		<!-- <property name="hashValueSerializer">
+		<property name="hashValueSerializer">
 			<bean
 				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
-		</property> -->
+		</property>
+		<!-- p:enableTransactionSupport 需要设置为true,才能开启Redis事务管理控制 -->
+		<property name="enableTransactionSupport" value="true" />
 	</bean>
-
+	
+	
+	<!-- 配置cacheManager 用于管理缓存 -->  
+    <bean id="cacheManager" class="org.springframework.data.redis.cache.RedisCacheManager">  
+        <constructor-arg name="redisOperations" ref="redisTemplate" />  
+    </bean>  
+      
 </beans>

@@ -38,12 +38,13 @@ public class UserController {
 	private UserService userService;
 
 	@RequestMapping(value = "/login", method = RequestMethod.GET)
-	public String userLogin() {
+	public String userLogin(HttpServletRequest request) {
 		return "../index.jsp";
 	}
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String userLogin(Customer customer, HttpSession session) {
+		
 		ResponseEntity resEntity = new ResponseEntity();
 		String destPage = "redirect:/manager/main";
 		customer = userService.findCustomer4Login(customer);

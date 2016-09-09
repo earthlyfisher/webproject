@@ -51,5 +51,4 @@ interface CacheCrudDao<T> {
      * @return int
      */
     int delete(T entity);
-
 }

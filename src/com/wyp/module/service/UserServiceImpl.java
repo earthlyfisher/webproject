@@ -33,10 +33,7 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	public List<Customer> showList() {
-		List<Object> list=userCacheDao.findAllList();
-		for(Object obj:list){
-			userCacheDao.delete((Customer)obj);
-		}
+		userCacheDao.clearRedisDb();
 		
 		System.out.println("before add .......................................");
 		Customer customer = new Customer();
@@ -60,7 +57,7 @@ public class UserServiceImpl implements UserService {
 		System.out.println("after update.........................");
 		System.out.println(userCacheDao.get("wyp"));
 		
-		list=userCacheDao.findAllList();
+		List<Object> list=userCacheDao.findAllList();
 		for(Object obj:list){
 			System.out.println(obj);
 		}
@@ -80,15 +77,16 @@ public class UserServiceImpl implements UserService {
 	 * @param customer
 	 */
 	@Override
-	public void addUser(Customer customer) {
+	public int addUser(Customer customer) {
 
-		userDao.insert(customer);
+		return userDao.insert(customer);
 	}
 
 	/**
 	 * @param customer
 	 */
 	@Override
+	//@Transactional(propagation=Propagation.REQUIRED)
 	public UserType registerUser(Customer customer) {
 		// 判断数据库有无此用户名记录
 		Customer dbCustomer = userDao.get(customer);
@@ -100,7 +98,7 @@ public class UserServiceImpl implements UserService {
 		String salt = CipherUtil.randomSalt();
 		customer.setSalt(salt);
 		customer.setPassword(CipherUtil.generatePassword(customer.getPassword(), salt));
-		int count = userDao.insert(customer);
+		int count = addUser(customer);
 		if (count > 0) {
 			logger.info("login success!");
 			return UserType.ACCOUNT_REGISTER_SUCCESS;

@@ -2,19 +2,15 @@ package com.wyp.module.cache;
 
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
-import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.data.redis.connection.SortParameters.Order;
 import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisCallback;
 import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.query.SortQueryBuilder;
-import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
-import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Component;
 
 import com.wyp.module.pojo.Customer;
 
-@Repository
+@Component("userCacheDao")
 public class UserCacheDao extends RedisBaseDao<String, Customer> implements CacheCrudDao<Customer> {
 
 	private static final String KEY = Customer.class.getName();

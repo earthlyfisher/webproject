@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
                             http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
                             http://www.springframework.org/schema/context
                             http://www.springframework.org/schema/context/spring-context-4.0.xsd
@@ -18,37 +16,49 @@
                             http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
 
 
-    <!-- 下面这两个开启了自动扫描功能 -->
-      <!-- 开启注解配置 即Autowried -->  
-    <context:annotation-config/>  
-    
-    <!--    使用自动注入的时候要  添加他来扫描bean之后才能在使用的时候   -->
-    <context:component-scan base-package="com.wyp.module.service,com.wyp.module.dao,com.wyp.module.cache"/>  
+	<!--使用自动注入的时候要 添加他来扫描bean之后才能在使用的时候 -->
+	<context:component-scan base-package="com.wyp.module.service,com.wyp.module.cache" />
 
-    <aop:config>
-        <aop:pointcut expression="bean(*Core)" id="module-pointcut" />
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="module-pointcut" />
-    </aop:config>
+	<!-- 文件上传相关配置 -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="defaultEncoding" value="UTF-8" />
+		<property name="maxUploadSize" value="1000000000" />
+		<property name="maxInMemorySize" value="40960" />
+	</bean>
 
-    <tx:advice id="txAdvice" transaction-manager="txManager">
-        <tx:attributes>
-            <tx:method name="query*" read-only="true"  propagation="REQUIRED" />
-            <tx:method name="get*" read-only="true"  propagation="REQUIRED" />
-            <tx:method name="create*" propagation="REQUIRED" rollback-for="java.lang.Exception,java.lang.RuntimeException" />
-            <tx:method name="add*" propagation="REQUIRED" rollback-for="java.lang.Exception,java.lang.RuntimeException" />
-            <tx:method name="save*" propagation="REQUIRED" rollback-for="java.lang.Exception,java.lang.RuntimeException" />
-            <tx:method name="update*" propagation="REQUIRED" rollback-for="java.lang.Exception,java.lang.RuntimeException" />
-            <tx:method name="delete*" propagation="REQUIRED" rollback-for="java.lang.Exception,java.lang.RuntimeException" />
-            <tx:method name="remove*" propagation="REQUIRED" rollback-for="java.lang.Exception,java.lang.RuntimeException" />
-            <tx:method name="*" propagation="REQUIRED" />
-        </tx:attributes>
-    </tx:advice>
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="registerDefaultFormatters" value="false" />
+		<property name="formatters">
+			<set>
+				<bean
+					class="org.springframework.format.number.NumberFormatAnnotationFormatterFactory" />
+			</set>
+		</property>
+		<property name="formatterRegistrars">
+			<set>
+				<bean
+					class="org.springframework.format.datetime.joda.JodaTimeFormatterRegistrar">
+					<property name="dateFormatter">
+						<bean
+							class="org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean">
+							<property name="pattern" value="yyyyMMdd" />
+						</bean>
+					</property>
+				</bean>
+			</set>
+		</property>
+	</bean>
 
-    <!-- 文件上传相关配置 -->
-    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="defaultEncoding" value="UTF-8" />
-        <property name="maxUploadSize" value="1000000000" />
-        <property name="maxInMemorySize" value="40960" />
-    </bean>
-    
+	<!-- 自定義bean处理，在bean实例初始化前后做一些事情 -->
+	<bean id="beanPostProcessor" class="com.wyp.module.common.MyBeanPostProcessor" />
+
+	<!-- 自定義bean工厂处理,在bean实例初始化前执行 -->
+	<bean id="beanFactoryPostProcessor" class="com.wyp.module.common.MyBeanFactoryPostProcessor" />
+
+	<!-- PostConstruct,PreDestroy -->
+	<bean class="com.wyp.module.common.PostConstructAndPreDestroy"
+		init-method="init" destroy-method="destroy" />
+
 </beans>

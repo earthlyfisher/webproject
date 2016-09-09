@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.Response;
+import redis.clients.jedis.Transaction;
 
 public class RedisTest {
 
@@ -108,5 +110,24 @@ public class RedisTest {
 		jedis=RedisUtils.getJedis();
 		System.out.println(jedis);
 		System.out.println(jedis.get("key"));
+	}
+	
+	@Test
+	public void testRedisTransaction(){
+		Jedis jedis=RedisUtils.getJedis();
+		Transaction tx=jedis.multi();
+		try{
+			for(int i=0;i<10;i++){
+				tx.set("wangyp"+i, "Gavin"+i);
+			}
+			List<Object> result=tx.exec();
+			for(Object obj:result){
+				System.out.println(obj);
+			}
+		}catch(Exception e){
+			tx.discard();
+		}finally {
+			jedis.disconnect();
+		}
 	}
 }
